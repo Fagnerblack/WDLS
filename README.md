@@ -1,7 +1,5 @@
 # WordList Black (v1.2)
 
-![ASCII Art da Caveira com cifrões no terminal]
-
 Gerador de wordlists modular, rápido e eficiente, construído em Python. O "WordList Black" utiliza permutações (combinações sem repetição) dos elementos fornecidos pelo usuário para criar dicionários personalizados, ideais para testes de segurança (auditoria de senhas) ou estudo de criptografia.
 
 ---
