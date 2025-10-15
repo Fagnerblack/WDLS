@@ -3,7 +3,6 @@ import os
 import sys
 
 # ASCII Art da Caveira
-# Fonte: Customizada para o projeto.
 CAVEIRA_ASCII = r"""
         .--.
        |o_o |
@@ -25,7 +24,7 @@ INFO_CRIADOR = """
 def mostrar_tela_inicial():
     """Exibe o ASCII Art e as informações do criador."""
     print("\n" * 2)
-    print(CAVEIRA_ASCII) # Agora exibe a caveira
+    print(CAVEIRA_ASCII)
     print(INFO_CRIADOR)
 
 def obter_elementos():
@@ -48,7 +47,7 @@ def obter_elementos():
             elementos.append(palavra)
         else:
             print("Elemento não pode ser vazio.")
-            i -= 1 # Repete a iteração
+            i -= 1
             
     return elementos
 
@@ -56,7 +55,7 @@ def encontrar_caminho_area_trabalho():
     """Tenta encontrar o caminho da Área de Trabalho ou usa o diretório atual."""
     desktop_paths = [
         os.path.join(os.path.expanduser('~'), 'Desktop'),
-        os.path.join(os.path.expanduser('~'), 'OneDrive', 'Desktop') # Para alguns PCs Windows
+        os.path.join(os.path.expanduser('~'), 'OneDrive', 'Desktop')
     ]
     for path in desktop_paths:
         if os.path.isdir(path):
@@ -66,7 +65,7 @@ def encontrar_caminho_area_trabalho():
     return os.getcwd()
 
 def gerar_wordlist_e_salvar(elementos):
-    """Gera as combinações e salva no arquivo 'WordList Black.txt'."""
+    """Gera as permutações e salva no arquivo 'WordList Black.txt'."""
     if not elementos:
         print("ERRO: Lista de elementos vazia.")
         return
@@ -75,12 +74,12 @@ def gerar_wordlist_e_salvar(elementos):
     nome_arquivo = "WordList Black.txt"
     caminho_completo = os.path.join(caminho_desktop, nome_arquivo)
     
-    # Tamanhos de 1 a 7 (ajustável)
+    # O tamanho máximo agora é limitado pelo número de elementos fornecidos (sem repetição)
     tamanho_min = 1
-    tamanho_max = 7
+    tamanho_max = len(elementos) # Garante que não tente permutar mais elementos do que existem
     
     contador = 0
-    print(f"\nGerando wordlist ({len(elementos)} itens, tam. {tamanho_min}-{tamanho_max})...")
+    print(f"\nGerando wordlist sem repetição ({len(elementos)} itens, tam. {tamanho_min}-{tamanho_max})...")
 
     try:
         with open(caminho_completo, 'w') as arquivo:
@@ -89,7 +88,8 @@ def gerar_wordlist_e_salvar(elementos):
                 sys.stdout.write(f"\rProcessando tamanho {tamanho}...")
                 sys.stdout.flush() 
                 
-                for senha_tuple in itertools.product(elementos, repeat=tamanho):
+                # CHAVE: Usando itertools.permutations para garantir que não haja repetição
+                for senha_tuple in itertools.permutations(elementos, r=tamanho):
                     senha = "".join(senha_tuple)
                     arquivo.write(senha + '\n')
                     contador += 1
