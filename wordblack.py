@@ -2,22 +2,53 @@ import itertools
 import os
 import sys
 
-# ASCII Art da Caveira
 CAVEIRA_ASCII = r"""
-        .--.
-       |o_o |
-       |:_/ |
-      //   \ \
-     (|     | )
-    /'\_   _/`\
-    \___)=(___/
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶____________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶_______________¶_____¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶______________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶________________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶__________________________¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶_____¶____________________¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶_¶______________________¶_¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶__¶_______________________¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶_¶____________________¶__¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶_¶___¶¶¶_________¶¶___¶__¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶¶¶¶_____¶¶¶¶¶__¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶¶¶¶____¶¶¶¶¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶___¶¶¶¶¶______¶¶¶¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶____¶¶¶________¶¶¶¶___¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶_________¶¶¶__________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_______¶¶¶¶________¶¶¶¶¶¶¶¶¶¶___¶¶¶
+¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶____¶¶¶¶¶______¶¶¶¶¶¶¶¶¶¶¶¶___¶¶¶
+¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶____¶_¶¶_____¶¶¶¶¶¶¶¶¶¶¶_¶¶__¶¶¶
+¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶____________¶¶¶¶¶¶¶¶__¶¶¶¶___¶¶
+¶¶___¶¶¶_¶¶¶¶¶¶¶¶¶__¶¶¶¶¶¶_¶_¶¶¶¶¶¶¶¶_¶¶¶¶¶¶¶¶___¶
+¶¶__¶¶¶¶¶¶¶__¶¶¶¶¶¶¶¶¶____¶_¶¶¶¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶___
+¶___¶¶¶¶¶¶¶¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶____
+___¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶¶¶¶¶¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶¶¶
+__¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶¶¶_¶¶¶__¶¶¶¶¶¶¶¶¶_¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶_¶¶¶¶¶¶¶¶¶¶__¶¶¶__¶¶¶¶¶¶__¶¶¶¶¶_¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶_¶¶¶¶¶¶__¶¶¶¶_¶_¶¶¶¶¶__¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶_¶¶¶__¶¶_¶¶¶¶¶_¶¶¶¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_¶¶¶_¶¶¶¶¶¶¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶_¶¶¶¶¶___¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_¶__¶¶__¶¶_¶¶¶¶¶_¶¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶__¶__¶_¶¶¶¶¶¶¶¶¶¶¶__¶__¶¶_¶¶¶¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶¶_¶__¶_¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶__¶¶_¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶¶¶__¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶_¶__¶¶¶¶¶¶¶¶¶
+¶¶¶¶¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶___¶¶¶¶¶
+¶¶¶__¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶__¶¶
+¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+-----------------Fagner_Santos--------------------
 """
 
-# Informações do Criador (limpas)
+
 INFO_CRIADOR = """
 ==============================================
 [ WordList Black - Gerador de Wordlists ]
-[ Versão: 1.0 | Por Gemini ]
+[ Versão: 1.2 | By FagnerSantos ]
 ==============================================
 """
 
@@ -61,7 +92,7 @@ def encontrar_caminho_area_trabalho():
         if os.path.isdir(path):
             return path
     
-    # Fallback: se não encontrar, usa o diretório atual
+
     return os.getcwd()
 
 def gerar_wordlist_e_salvar(elementos):
@@ -74,9 +105,9 @@ def gerar_wordlist_e_salvar(elementos):
     nome_arquivo = "WordList Black.txt"
     caminho_completo = os.path.join(caminho_desktop, nome_arquivo)
     
-    # O tamanho máximo agora é limitado pelo número de elementos fornecidos (sem repetição)
+    
     tamanho_min = 1
-    tamanho_max = len(elementos) # Garante que não tente permutar mais elementos do que existem
+    tamanho_max = len(elementos) 
     
     contador = 0
     print(f"\nGerando wordlist sem repetição ({len(elementos)} itens, tam. {tamanho_min}-{tamanho_max})...")
@@ -84,17 +115,17 @@ def gerar_wordlist_e_salvar(elementos):
     try:
         with open(caminho_completo, 'w') as arquivo:
             for tamanho in range(tamanho_min, tamanho_max + 1):
-                # Mensagem de progresso mínima
+                
                 sys.stdout.write(f"\rProcessando tamanho {tamanho}...")
                 sys.stdout.flush() 
                 
-                # CHAVE: Usando itertools.permutations para garantir que não haja repetição
+                
                 for senha_tuple in itertools.permutations(elementos, r=tamanho):
                     senha = "".join(senha_tuple)
                     arquivo.write(senha + '\n')
                     contador += 1
         
-        # Mensagem final de sucesso
+        
         print(f"\r\n--- SUCESSO! ---")
         print(f"Senhas geradas: {contador}. Salvo em: {caminho_completo}")
 
